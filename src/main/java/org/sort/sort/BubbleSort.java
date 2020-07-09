@@ -5,7 +5,8 @@ public class BubbleSort {
 
     // 普通的冒泡排序
     public static int[] sort(int[] array) {
-        int roundTime = 0, swapTime = 0;
+        long start = System.currentTimeMillis();
+        long roundTime = 0, swapTime = 0;
         for (int i = 0 ; i < array.length - 1; i++) {
             for (int j = 0 ; j < array.length - 1 - i; j++) {
                 roundTime++;
@@ -17,34 +18,45 @@ public class BubbleSort {
                 }
             }
         }
+        long end = System.currentTimeMillis();
         System.out.println("普通的冒泡排序-循环次数：" + roundTime + ";交换次数：" + swapTime);
+        System.out.println("普通的冒泡排序-用时：" + (end - start));
         return array;
     }
 
     // 优化了循环次数的冒泡排序
     public static int[] sort1(int[] array) {
-        int roundTime = 0, swapTime = 0;
-        for (int i = 0; i < array.length - 1; i++) {
-            for (int j = i + 1; j < array.length; j++) {
+        long start = System.currentTimeMillis();
+        long roundTime = 0, swapTime = 0;
+        boolean needSwap = false;
+        for (int i = 0 ; i < array.length - 1; i++) {
+            needSwap = false;
+            for (int j = 0 ; j < array.length - 1 - i; j++) {
                 roundTime++;
-                if (array[i] < array[j]) {
+                if (array[j] < array[j + 1]) {
+                    needSwap = true;
                     swapTime++;
-                    int temp = array[i];
-                    array[i] = array[j];
-                    array[j] = temp;
+                    int temp = array[j];
+                    array[j] = array[j + 1];
+                    array[j + 1] = temp;
                 }
             }
+            if (!needSwap) {
+                break;
+            }
         }
+        long end = System.currentTimeMillis();
         System.out.println("优化了循环次数的冒泡排序-循环次数：" + roundTime + ";交换次数：" + swapTime);
+        System.out.println("优化了循环次数的冒泡排序-用时：" + (end - start));
         return array;
     }
 
 
 
     public static void main(String[] args) {
-        int[] array = gennerateArray(100, 200);
-        int[] array1 = new int[100];
-        System.arraycopy(array, 0, array1, 0, 100);
+        int[] array = gennerateArray(100000, 2000000);
+        int[] array1 = new int[100000];
+        System.arraycopy(array, 0, array1, 0, array1.length);
         sort(array);
         sort1(array1);
 //        for (int i = 0; i < sortedArray.length; i++) {
