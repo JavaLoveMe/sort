@@ -4,70 +4,31 @@ package org.sort.sort;
 public class BubbleSort {
 
     // 普通的冒泡排序
-    public static int[] sort(int[] array) {
-        long start = System.currentTimeMillis();
-        long roundTime = 0, swapTime = 0;
+    public static void sort(int[] array) {
         for (int i = 0 ; i < array.length - 1; i++) {
             for (int j = 0 ; j < array.length - 1 - i; j++) {
-                roundTime++;
                 if (array[j] < array[j + 1]) {
-                    swapTime++;
+                    output(array);
                     int temp = array[j];
                     array[j] = array[j + 1];
                     array[j + 1] = temp;
                 }
             }
         }
-        long end = System.currentTimeMillis();
-        System.out.println("普通的冒泡排序-循环次数：" + roundTime + ";交换次数：" + swapTime);
-        System.out.println("普通的冒泡排序-用时：" + (end - start));
-        return array;
     }
 
-    // 优化了循环次数的冒泡排序
-//    public static int[] sort1(int[] array) {
-//        long start = System.currentTimeMillis();
-//        long roundTime = 0, swapTime = 0;
-//        boolean needSwap = false;
-//        for (int i = 0 ; i < array.length - 1; i++) {
-//            needSwap = false;
-//            for (int j = 0 ; j < array.length - 1 - i; j++) {
-//                roundTime++;
-//                if (array[j] < array[j + 1]) {
-//                    needSwap = true;
-//                    swapTime++;
-//                    int temp = array[j];
-//                    array[j] = array[j + 1];
-//                    array[j + 1] = temp;
-//                }
-//            }
-//            if (!needSwap) {
-//                break;
-//            }
-//        }
-//        long end = System.currentTimeMillis();
-//        System.out.println("优化了循环次数的冒泡排序-循环次数：" + roundTime + ";交换次数：" + swapTime);
-//        System.out.println("优化了循环次数的冒泡排序-用时：" + (end - start));
-//        return array;
-//    }
 
-    public static int[] sort1(int[] array) {
-
-        long start = System.currentTimeMillis();
-        long roundTime = 0, swapTime = 0;
-
+    public static void sort1(int[] array) {
         int tmp  = 0;
         for (int i = 0; i < array.length; i++) {
-            //有序标记，每一轮的初始是true
+            // 有序标记，每一轮的初始是true
             boolean isSorted = true;
             for (int j = 0; j < array.length - i - 1; j++) {
-                roundTime++;
                 if (array[j] < array[j + 1]) {
-                    swapTime++;
                     tmp = array[j];
                     array[j] = array[j + 1];
                     array[j+1] = tmp;
-                    //有元素交换，所以不是有序，标记变为false
+                    // 有元素交换，所以不是有序，标记变为false
                     isSorted = false;
                 }
             }
@@ -75,55 +36,43 @@ public class BubbleSort {
                 break;
             }
         }
-
-        long end = System.currentTimeMillis();
-        System.out.println("优化了循环次数的冒泡排序-循环次数：" + roundTime + ";交换次数：" + swapTime);
-        System.out.println("优化了循环次数的冒泡排序-用时：" + (end - start));
-        return array;
     }
 
-    public static int[] sort2(int[] array) {
-
-        long start = System.currentTimeMillis();
-        long roundTime = 0, swapTime = 0;
-
+    public static void sort2(int[] array) {
         int tmp  = 0;
-        //记录最后一次交换的位置
+        // 记录循环最后一次数据交换的位置
         int lastExchangeIndex = 0;
-        //无序数列的边界，每次比较只需要比到这里为止
-        int sortBorder = array.length - 1;
+        // 无序数列的边界，每次比较只需要比到这里为止
+        int unSortBorder = array.length - 1;
         for (int i = 0; i < array.length; i++) {
-            //有序标记，每一轮的初始是true
+            // 数组有序标记，每一轮的初始是true
             boolean isSorted = true;
-            for (int j = 0; j < sortBorder; j++) {
-                roundTime++;
+            for (int j = 0; j < unSortBorder; j++) {
                 if (array[j] < array[j + 1]) {
-                    swapTime++;
                     tmp = array[j];
                     array[j] = array[j+1];
                     array[j+1] = tmp;
-                    //有元素交换，所以不是有序，标记变为false
+                    // 有元素交换，所以数组是无序的，标记变为false
                     isSorted = false;
-                    //把无序数列的边界更新为最后一次交换元素的位置
+                    // 把无序数列的边界更新为最后一次交换元素的位置
                     lastExchangeIndex = j;
                 }
             }
-            sortBorder = lastExchangeIndex;
+            unSortBorder = lastExchangeIndex;
             if (isSorted) {
                 break;
             }
         }
-        long end = System.currentTimeMillis();
-        System.out.println("二次优化了循环次数的冒泡排序-循环次数：" + roundTime + ";交换次数：" + swapTime);
-        System.out.println("二次优化了循环次数的冒泡排序-用时：" + (end - start));
-        return array;
     }
 
 
 
     public static void main(String[] args) {
-        int[] array = gennerateArray(100000, 2000000);
-        int[] array1 = new int[100000]; int[] array2 = new int[100000];
+//        int[] array = gennerateArray(10, 20);
+        int[] array = {17, 11, 4, 12, 10, 6, 15, 5, 3, 8};
+        outputArray(array);
+
+        int[] array1 = new int[10]; int[] array2 = new int[10];
         System.arraycopy(array, 0, array1, 0, array1.length);
         System.arraycopy(array, 0, array2, 0, array2.length);
         sort(array);
@@ -147,5 +96,32 @@ public class BubbleSort {
             arr[i] = (int)(Math.random() * max);
         }
         return arr;
+    }
+
+    private static void output(int[] array) {
+        for (int i = 0; i < array.length; i++) {
+            if (i == 0) {
+                System.out.print("[" + array[0] + ", ");
+            } else if (i == array.length - 1) {
+                System.out.println(array[i] + "]");
+            } else {
+                System.out.print(array[i] + ", ");
+            }
+
+        }
+    }
+
+    private static void outputArray(int[] array) {
+        for (int i = 0; i < array.length; i++) {
+            if (i == 0) {
+                System.out.println("原始数组：");
+                System.out.print("[" + array[0] + ", ");
+            } else if (i == array.length - 1) {
+                System.out.println(array[i] + "]");
+            } else {
+                System.out.print(array[i] + ", ");
+            }
+
+        }
     }
 }
