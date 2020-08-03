@@ -17,6 +17,7 @@ public class ShellSort {
             for (outer  = h; outer < array.length; outer++) {
                 temp = array[outer];
                 inner = outer;
+                System.out.println("inner1:" + inner + "; inner2:" + (inner - h));
                 while (inner > h - 1 && array[inner - h] <= temp) {
                     array[inner] = array[inner - h];
                     inner -= h;
@@ -25,7 +26,6 @@ public class ShellSort {
             }
             h = (h - 1) / 3;
         }
-        output(array);
     }
 
     public static void main(String[] args) {
