@@ -13,23 +13,24 @@ public class HeapSort {
      *     start -- 被下调节点的起始位置(一般为0，表示从第1个开始)
      *     end   -- 截至范围(一般为数组中最后一个元素的索引)
      */
-    public static void minHeapDown(int[] a, int start, int end) {
-        int c = start;            // 当前(current)节点的位置
-        int l = 2*c + 1;        // 左(left)孩子的位置
-        int tmp = a[c];            // 当前(current)节点的大小
+    public static void minHeapDown(int[] array, int start, int end) {
+        int current = start;            // 当前(current)节点的位置
+        int left = 2 * current + 1;        // 左(left)孩子的位置
+        int tmp = array[current];            // 当前(current)节点的大小
 
-        for (; l <= end; c=l,l=2*l+1) {
-            // "l"是左孩子，"l+1"是右孩子
-            if ( l < end && a[l] > a[l+1])
-                l++;        // 左右两孩子中选择较小者
-            if (tmp <= a[l])
+        for (; left <= end; current = left, left = 2 * left + 1) {
+            // "left"是左孩子，"left+1"是右孩子
+            if (left < end && array[left] > array[left + 1])
+                left++;        // 左右两孩子中选择较小者
+            if (tmp <= array[left])
                 break;        // 调整结束
             else {            // 交换值
-                a[c] = a[l];
-                a[l]= tmp;
+                array[current] = array[left];
+                array[left] = tmp;
             }
         }
     }
+
 
     /*
      * 堆排序(从大到小)
@@ -38,28 +39,27 @@ public class HeapSort {
      *     a -- 待排序的数组
      *     n -- 数组的长度
      */
-    public static void HeapSort(int[] a, int n) {
-        int i,tmp;
+    public static void HeapSort(int[] array) {
+        int start, tmp;
+        int length = array.length;
 
-        // 从(n/2-1) --> 0逐次遍历每。遍历之后，得到的数组实际上是一个最小堆。
-        for (i = n / 2 - 1; i >= 0; i--)
-            minHeapDown(a, i, n-1);
-
+        for (start = length / 2 - 1; start >= 0; start--)
+            minHeapDown(array, start, length - 1);
         // 从最后一个元素开始对序列进行调整，不断的缩小调整的范围直到第一个元素
-        for (i = n - 1; i > 0; i--) {
-            // 交换a[0]和a[i]。交换后，a[i]是a[0...i]中最小的。
-            tmp = a[0];
-            a[0] = a[i];
-            a[i] = tmp;
-            // 调整a[0...i-1]，使得a[0...i-1]仍然是一个最小堆。
-            // 即，保证a[i-1]是a[0...i-1]中的最小值。
-            minHeapDown(a, 0, i-1);
+        for (start = length - 1; start > 0; start--) {
+            // 交换array[0]和array[i]。交换后，array[i]是array[0...i]中最小的。
+            tmp = array[0];
+            array[0] = array[start];
+            array[start] = tmp;
+            // 调整array[0...i-1]，使得array[0...i-1]仍然是一个最小堆。
+            // 即，保证array[i-1]是array[0...i-1]中的最小值。
+            minHeapDown(array, 0, start - 1);
         }
     }
 
     public static void main(String[] args) {
-        int[] array = new int[]{17, 11, 4, 12, 10, 6, 15, 5, 3, 8};
-        HeapSort(array, array.length);
+        int[] array = new int[]{ 17, 11, 4, 12, 10, 6, 15, 5, 3, 8 };
+        HeapSort(array);
         output(array);
     }
 
